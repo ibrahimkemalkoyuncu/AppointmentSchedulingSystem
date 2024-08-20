@@ -1,0 +1,32 @@
+﻿@{
+    ViewData["Title"] = "Ana Sayfa";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Hastane Randevu Sistemi</h1>
+    <p>Hoş geldiniz! Randevu işlemleriniz için aşağıdaki linkleri kullanabilirsiniz.</p>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Randevular</h2>
+        <ul>
+            <li><a asp-controller="Appointments" asp-action="Index">Randevu Listesi</a></li>
+            <li><a asp-controller="Appointments" asp-action="Create">Yeni Randevu</a></li>
+        </ul>
+    </div>
+    <div class="col-md-4">
+        <h2>Hastalar</h2>
+        <ul>
+            <li><a asp-controller="Patients" asp-action="Index">Hasta Listesi</a></li>
+            <li><a asp-controller="Patients" asp-action="Create">Yeni Hasta Kaydı</a></li>
+        </ul>
+    </div>
+    <div class="col-md-4">
+        <h2>Doktorlar</h2>
+        <ul>
+            <li><a asp-controller="Doctors" asp-action="Index">Doktor Listesi</a></li>
+            <li><a asp-controller="Doctors" asp-action="Create">Yeni Doktor Kaydı</a></li>
+        </ul>
+    </div>
+</div>

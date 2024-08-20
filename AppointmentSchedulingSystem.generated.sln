@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppointmentSchedulingSystem", "AppointmentSchedulingSystem.csproj", "{27A1F9D9-F3EB-4130-9ED1-0B3A74F76F74}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppointmentSchedulingSystem", "AppointmentSchedulingSystem.csproj", "{84FD49B5-01D4-4091-853A-BA7B1A9EEAD7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{27A1F9D9-F3EB-4130-9ED1-0B3A74F76F74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{27A1F9D9-F3EB-4130-9ED1-0B3A74F76F74}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{27A1F9D9-F3EB-4130-9ED1-0B3A74F76F74}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{27A1F9D9-F3EB-4130-9ED1-0B3A74F76F74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84FD49B5-01D4-4091-853A-BA7B1A9EEAD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84FD49B5-01D4-4091-853A-BA7B1A9EEAD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84FD49B5-01D4-4091-853A-BA7B1A9EEAD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84FD49B5-01D4-4091-853A-BA7B1A9EEAD7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

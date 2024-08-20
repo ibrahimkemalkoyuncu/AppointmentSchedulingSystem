@@ -59,26 +59,37 @@ namespace AppointmentSchedulingSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,PatientId,DoctorId,AppointmentDate,Status")] Appointment appointment)
+        public async Task<IActionResult> Create([Bind("PatientId,DoctorId,AppointmentDate")] Appointment appointment)
         {
-            //var doctor = await _context.Doctors.FirstAsync(x => x.Id == appointment.DoctorId);
-
-            //var patient = await _context.Patients.FirstAsync(x => x.Id == appointment.PatientId);
-
-            //appointment.Doctor = doctor;
-            //appointment.Patient = patient;
 
 
             if (ModelState.IsValid)
             {
-                //appointment.Status = "Beklemede";
+                // Randevu süresi 30 dakika
+                var appointmentEnd = appointment.AppointmentDate.AddMinutes(30);
+
+                // Çakışma kontrolü
+                var conflictingAppointment = await _context.Appointments
+                    .Where(a => a.DoctorId == appointment.DoctorId &&
+                                a.AppointmentDate < appointmentEnd &&
+                                a.AppointmentDate.AddMinutes(30) > appointment.AppointmentDate)
+                    .FirstOrDefaultAsync();
+
+                if (conflictingAppointment != null)
+                {
+                    ModelState.AddModelError("", "Bu tarih ve saatte doktorun başka bir randevusu bulunmaktadır.");
+                    ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Name", appointment.PatientId);
+                    ViewData["DoctorId"] = new SelectList(_context.Doctors, "Id", "Name", appointment.DoctorId);
+                    return View(appointment);
+                }
+
+                appointment.Status = "Beklemede";
                 _context.Add(appointment);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Name", appointment.PatientId);
             ViewData["DoctorId"] = new SelectList(_context.Doctors, "Id", "Name", appointment.DoctorId);
-            //ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Name", appointment.PatientId);
-            ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "IdentityNumber", appointment.PatientId);
             return View(appointment);
         }
 
@@ -114,6 +125,24 @@ namespace AppointmentSchedulingSystem.Controllers
 
             if (ModelState.IsValid)
             {
+
+                // Çakışma kontrolü
+                var conflictingAppointment = await _context.Appointments
+                    .Where(a => a.DoctorId == appointment.DoctorId &&
+                                a.AppointmentDate == appointment.AppointmentDate)
+                    .FirstOrDefaultAsync();
+
+                if (conflictingAppointment != null)
+                {
+                    ModelState.AddModelError("", "Bu tarih ve saatte doktorun başka bir randevusu bulunmaktadır.");
+                    ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Name", appointment.PatientId);
+                    ViewData["DoctorId"] = new SelectList(_context.Doctors, "Id", "Name", appointment.DoctorId);
+                    return View(appointment);
+                }
+
+
+
+
                 try
                 {
                     _context.Update(appointment);

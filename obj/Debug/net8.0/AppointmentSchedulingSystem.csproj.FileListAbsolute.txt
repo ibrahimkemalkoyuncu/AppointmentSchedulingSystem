@@ -250,3 +250,4 @@ C:\MyWorking\AppointmentSchedulingSystem\bin\Debug\net8.0\runtimes\win\lib\net6.
 C:\MyWorking\AppointmentSchedulingSystem\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Security.Cryptography.ProtectedData.dll
 C:\MyWorking\AppointmentSchedulingSystem\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Windows.Extensions.dll
 C:\MyWorking\AppointmentSchedulingSystem\obj\Debug\net8.0\Appointm.E3040DCA.Up2Date
+C:\MyWorking\AppointmentSchedulingSystem\obj\Debug\net8.0\AppointmentSchedulingSystem.sourcelink.json

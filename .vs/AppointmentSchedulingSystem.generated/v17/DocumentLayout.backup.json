@@ -3,32 +3,32 @@
   "WorkspaceRootPath": "C:\\MyWorking\\AppointmentSchedulingSystem\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{FC7F9045-56B2-4983-937A-0F33077F7967}|AppointmentSchedulingSystem.csproj|c:\\myworking\\appointmentschedulingsystem\\models\\appointment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FC7F9045-56B2-4983-937A-0F33077F7967}|AppointmentSchedulingSystem.csproj|solutionrelative:models\\appointment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{27A1F9D9-F3EB-4130-9ED1-0B3A74F76F74}|AppointmentSchedulingSystem.csproj|c:\\myworking\\appointmentschedulingsystem\\controllers\\appointmentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{27A1F9D9-F3EB-4130-9ED1-0B3A74F76F74}|AppointmentSchedulingSystem.csproj|solutionrelative:controllers\\appointmentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{FC7F9045-56B2-4983-937A-0F33077F7967}|AppointmentSchedulingSystem.csproj|c:\\myworking\\appointmentschedulingsystem\\models\\doctor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FC7F9045-56B2-4983-937A-0F33077F7967}|AppointmentSchedulingSystem.csproj|solutionrelative:models\\doctor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{27A1F9D9-F3EB-4130-9ED1-0B3A74F76F74}|AppointmentSchedulingSystem.csproj|c:\\myworking\\appointmentschedulingsystem\\models\\patient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{27A1F9D9-F3EB-4130-9ED1-0B3A74F76F74}|AppointmentSchedulingSystem.csproj|solutionrelative:models\\patient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{FC7F9045-56B2-4983-937A-0F33077F7967}|AppointmentSchedulingSystem.csproj|c:\\myworking\\appointmentschedulingsystem\\models\\clinical.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FC7F9045-56B2-4983-937A-0F33077F7967}|AppointmentSchedulingSystem.csproj|solutionrelative:models\\clinical.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{27A1F9D9-F3EB-4130-9ED1-0B3A74F76F74}|AppointmentSchedulingSystem.csproj|c:\\myworking\\appointmentschedulingsystem\\models\\appointment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{27A1F9D9-F3EB-4130-9ED1-0B3A74F76F74}|AppointmentSchedulingSystem.csproj|solutionrelative:models\\appointment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{FC7F9045-56B2-4983-937A-0F33077F7967}|AppointmentSchedulingSystem.csproj|c:\\myworking\\appointmentschedulingsystem\\controllers\\appointmentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FC7F9045-56B2-4983-937A-0F33077F7967}|AppointmentSchedulingSystem.csproj|solutionrelative:controllers\\appointmentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{27A1F9D9-F3EB-4130-9ED1-0B3A74F76F74}|AppointmentSchedulingSystem.csproj|c:\\myworking\\appointmentschedulingsystem\\models\\clinical.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{27A1F9D9-F3EB-4130-9ED1-0B3A74F76F74}|AppointmentSchedulingSystem.csproj|solutionrelative:models\\clinical.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{FC7F9045-56B2-4983-937A-0F33077F7967}|AppointmentSchedulingSystem.csproj|c:\\myworking\\appointmentschedulingsystem\\models\\patient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FC7F9045-56B2-4983-937A-0F33077F7967}|AppointmentSchedulingSystem.csproj|solutionrelative:models\\patient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{27A1F9D9-F3EB-4130-9ED1-0B3A74F76F74}|AppointmentSchedulingSystem.csproj|c:\\myworking\\appointmentschedulingsystem\\models\\doctor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{27A1F9D9-F3EB-4130-9ED1-0B3A74F76F74}|AppointmentSchedulingSystem.csproj|solutionrelative:models\\doctor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{FC7F9045-56B2-4983-937A-0F33077F7967}|AppointmentSchedulingSystem.csproj|c:\\myworking\\appointmentschedulingsystem\\controllers\\patientscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FC7F9045-56B2-4983-937A-0F33077F7967}|AppointmentSchedulingSystem.csproj|solutionrelative:controllers\\patientscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{27A1F9D9-F3EB-4130-9ED1-0B3A74F76F74}|AppointmentSchedulingSystem.csproj|c:\\myworking\\appointmentschedulingsystem\\controllers\\patientscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{27A1F9D9-F3EB-4130-9ED1-0B3A74F76F74}|AppointmentSchedulingSystem.csproj|solutionrelative:controllers\\patientscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{FC7F9045-56B2-4983-937A-0F33077F7967}|AppointmentSchedulingSystem.csproj|c:\\myworking\\appointmentschedulingsystem\\controllers\\doctorscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FC7F9045-56B2-4983-937A-0F33077F7967}|AppointmentSchedulingSystem.csproj|solutionrelative:controllers\\doctorscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{27A1F9D9-F3EB-4130-9ED1-0B3A74F76F74}|AppointmentSchedulingSystem.csproj|c:\\myworking\\appointmentschedulingsystem\\controllers\\doctorscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{27A1F9D9-F3EB-4130-9ED1-0B3A74F76F74}|AppointmentSchedulingSystem.csproj|solutionrelative:controllers\\doctorscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -38,7 +38,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 8,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Bookmark",
@@ -62,7 +62,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "Doctor.cs",
               "DocumentMoniker": "C:\\MyWorking\\AppointmentSchedulingSystem\\Models\\Doctor.cs",
               "RelativeDocumentMoniker": "Models\\Doctor.cs",
@@ -70,48 +70,51 @@
               "RelativeToolTip": "Models\\Doctor.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAuwAgAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-20T11:18:58.649Z"
+              "WhenOpened": "2024-08-20T11:18:58.649Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Clinical.cs",
               "DocumentMoniker": "C:\\MyWorking\\AppointmentSchedulingSystem\\Models\\Clinical.cs",
               "RelativeDocumentMoniker": "Models\\Clinical.cs",
               "ToolTip": "C:\\MyWorking\\AppointmentSchedulingSystem\\Models\\Clinical.cs",
               "RelativeToolTip": "Models\\Clinical.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAuwA0AAAAaAAAAAAAAAA==",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAuwA0AAAAcAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-20T11:18:55.843Z"
+              "WhenOpened": "2024-08-20T11:18:55.843Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
               "Title": "AppointmentsController.cs",
               "DocumentMoniker": "C:\\MyWorking\\AppointmentSchedulingSystem\\Controllers\\AppointmentsController.cs",
               "RelativeDocumentMoniker": "Controllers\\AppointmentsController.cs",
               "ToolTip": "C:\\MyWorking\\AppointmentSchedulingSystem\\Controllers\\AppointmentsController.cs",
               "RelativeToolTip": "Controllers\\AppointmentsController.cs",
-              "ViewState": "AgIAADYAAAAAAAAAAAAYwD0AAAByAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAF8AAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-20T11:03:05.634Z"
+              "WhenOpened": "2024-08-20T11:03:05.634Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "Appointment.cs",
               "DocumentMoniker": "C:\\MyWorking\\AppointmentSchedulingSystem\\Models\\Appointment.cs",
               "RelativeDocumentMoniker": "Models\\Appointment.cs",
               "ToolTip": "C:\\MyWorking\\AppointmentSchedulingSystem\\Models\\Appointment.cs",
               "RelativeToolTip": "Models\\Appointment.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAAAsAAAAmAAAAAAAAAA==",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABAAAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-08-20T11:02:52.967Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 1,
               "Title": "Patient.cs",
               "DocumentMoniker": "C:\\MyWorking\\AppointmentSchedulingSystem\\Models\\Patient.cs",
               "RelativeDocumentMoniker": "Models\\Patient.cs",
@@ -119,7 +122,8 @@
               "RelativeToolTip": "Models\\Patient.cs",
               "ViewState": "AgIAAAsAAAAAAAAAAAAAwBcAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-20T11:02:34.17Z"
+              "WhenOpened": "2024-08-20T11:02:34.17Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -131,7 +135,8 @@
               "RelativeToolTip": "Controllers\\PatientsController.cs",
               "ViewState": "AgIAAAwAAAAAAAAAAAAAABcAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-20T11:00:31.587Z"
+              "WhenOpened": "2024-08-20T11:00:31.587Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -141,9 +146,10 @@
               "RelativeDocumentMoniker": "Controllers\\DoctorsController.cs",
               "ToolTip": "C:\\MyWorking\\AppointmentSchedulingSystem\\Controllers\\DoctorsController.cs",
               "RelativeToolTip": "Controllers\\DoctorsController.cs",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAAABcAAAAIAAAAAAAAAA==",
+              "ViewState": "AgIAACEAAAAAAAAAAAAYwDkAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-20T10:41:43.895Z"
+              "WhenOpened": "2024-08-20T10:41:43.895Z",
+              "EditorCaption": ""
             }
           ]
         },

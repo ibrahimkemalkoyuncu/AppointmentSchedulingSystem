@@ -14,5 +14,5 @@ public class Appointment
     public int DoctorId { get; set; }
     public Doctor? Doctor { get; set; }
     public DateTime AppointmentDate { get; set; }
-    public string Status { get; set; } // Örneğin: Beklemede, Onaylandı, İptal Edildi
+    public string? Status { get; set; } // Örneğin: Beklemede, Onaylandı, İptal Edildi
 }

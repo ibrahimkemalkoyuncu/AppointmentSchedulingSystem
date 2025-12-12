@@ -63,19 +63,22 @@ namespace AppointmentSchedulingSystem.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Doktorun varsayılan randevu süresini getir
+                var doctor = await _context.Doctors.FindAsync(appointment.DoctorId);
+                var duration = doctor?.AppointmentDuration ?? 30; // Varsayılan 30 dk
+                appointment.EndDate = appointment.AppointmentDate.AddMinutes(duration);
+
                 // Mesai Saati Kontrolü (Örn: 09:00 - 17:00)
-                if (appointment.AppointmentDate.Hour < 9 || appointment.AppointmentDate.Hour >= 17)
+                // Randevu 09:00'dan önce başlayamaz ve 17:00'dan sonra bitemez.
+                if (appointment.AppointmentDate.Hour < 9 || appointment.EndDate.Hour >= 17 || (appointment.EndDate.Hour == 17 && appointment.EndDate.Minute > 0))
                 {
-                    ModelState.AddModelError("", "Randevular sadece 09:00 - 17:00 saatleri arasında alınabilir.");
+                    ModelState.AddModelError("", "Randevular 09:00 - 17:00 saatleri arasında olmalıdır.");
                     ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Name", appointment.PatientId);
                     ViewData["DoctorId"] = new SelectList(_context.Doctors, "Id", "Name", appointment.DoctorId);
                     return View(appointment);
                 }
 
-                // Randevu süresi 30 dakika olarak ayarlanır ve EndDate hesaplanır
-                appointment.EndDate = appointment.AppointmentDate.AddMinutes(30);
-
-                // Çakışma kontrolü
+                // 1. Doktor Çakışma Kontrolü
                 var conflictingAppointment = await _context.Appointments
                     .Where(a => a.DoctorId == appointment.DoctorId &&
                                 a.AppointmentDate < appointment.EndDate &&
@@ -85,6 +88,21 @@ namespace AppointmentSchedulingSystem.Controllers
                 if (conflictingAppointment != null)
                 {
                     ModelState.AddModelError("", "Bu tarih ve saatte doktorun başka bir randevusu bulunmaktadır.");
+                    ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Name", appointment.PatientId);
+                    ViewData["DoctorId"] = new SelectList(_context.Doctors, "Id", "Name", appointment.DoctorId);
+                    return View(appointment);
+                }
+
+                // 2. Hasta Çakışma Kontrolü (Hasta aynı anda iki yerde olamaz)
+                var patientConflict = await _context.Appointments
+                    .Where(a => a.PatientId == appointment.PatientId &&
+                                a.AppointmentDate < appointment.EndDate &&
+                                a.EndDate > appointment.AppointmentDate)
+                    .FirstOrDefaultAsync();
+
+                if (patientConflict != null)
+                {
+                    ModelState.AddModelError("", "Hastanın bu saatte başka bir doktorla randevusu bulunmaktadır.");
                     ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Name", appointment.PatientId);
                     ViewData["DoctorId"] = new SelectList(_context.Doctors, "Id", "Name", appointment.DoctorId);
                     return View(appointment);
@@ -132,19 +150,22 @@ namespace AppointmentSchedulingSystem.Controllers
 
             if (ModelState.IsValid)
             {
+                // Doktorun varsayılan randevu süresini getir
+                var doctor = await _context.Doctors.FindAsync(appointment.DoctorId);
+                var duration = doctor?.AppointmentDuration ?? 30; // Varsayılan 30 dk
+                appointment.EndDate = appointment.AppointmentDate.AddMinutes(duration);
+
                 // Mesai Saati Kontrolü (Örn: 09:00 - 17:00)
-                if (appointment.AppointmentDate.Hour < 9 || appointment.AppointmentDate.Hour >= 17)
+                // Randevu 09:00'dan önce başlayamaz ve 17:00'dan sonra bitemez.
+                if (appointment.AppointmentDate.Hour < 9 || appointment.EndDate.Hour >= 17 || (appointment.EndDate.Hour == 17 && appointment.EndDate.Minute > 0))
                 {
-                    ModelState.AddModelError("", "Randevular sadece 09:00 - 17:00 saatleri arasında alınabilir.");
+                    ModelState.AddModelError("", "Randevular 09:00 - 17:00 saatleri arasında olmalıdır.");
                     ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Name", appointment.PatientId);
                     ViewData["DoctorId"] = new SelectList(_context.Doctors, "Id", "Name", appointment.DoctorId);
                     return View(appointment);
                 }
 
-                // Randevu süresi 30 dakika olarak ayarlanır ve EndDate hesaplanır
-                appointment.EndDate = appointment.AppointmentDate.AddMinutes(30);
-
-                // Çakışma kontrolü (Artık veritabanındaki EndDate kullanılıyor)
+                // 1. Doktor Çakışma Kontrolü
                 var conflictingAppointment = await _context.Appointments
                     .Where(a => a.Id != appointment.Id && // Kendi kendisiyle çakışmasını önle
                                 a.DoctorId == appointment.DoctorId &&
@@ -155,6 +176,22 @@ namespace AppointmentSchedulingSystem.Controllers
                 if (conflictingAppointment != null)
                 {
                     ModelState.AddModelError("", "Bu tarih ve saatte doktorun başka bir randevusu bulunmaktadır.");
+                    ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Name", appointment.PatientId);
+                    ViewData["DoctorId"] = new SelectList(_context.Doctors, "Id", "Name", appointment.DoctorId);
+                    return View(appointment);
+                }
+
+                // 2. Hasta Çakışma Kontrolü
+                var patientConflict = await _context.Appointments
+                    .Where(a => a.Id != appointment.Id && // Kendi kendisini hariç tut
+                                a.PatientId == appointment.PatientId &&
+                                a.AppointmentDate < appointment.EndDate &&
+                                a.EndDate > appointment.AppointmentDate)
+                    .FirstOrDefaultAsync();
+
+                if (patientConflict != null)
+                {
+                    ModelState.AddModelError("", "Hastanın bu saatte başka bir doktorla randevusu bulunmaktadır.");
                     ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Name", appointment.PatientId);
                     ViewData["DoctorId"] = new SelectList(_context.Doctors, "Id", "Name", appointment.DoctorId);
                     return View(appointment);

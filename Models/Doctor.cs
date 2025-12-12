@@ -21,5 +21,9 @@ public class Doctor
     public int ClinicalId { get; set; }
     public Clinical? Clinical { get; set; }
 
+    // Randevu süresi (Dakika cinsinden). Varsayılan: 30
+    [Range(5, 120)]
+    public int AppointmentDuration { get; set; } = 30;
+
     public List<Appointment>? Appointments { get; set; } // Doktorun randevuları
 }

@@ -61,18 +61,25 @@ namespace AppointmentSchedulingSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("PatientId,DoctorId,AppointmentDate")] Appointment appointment)
         {
-
-
             if (ModelState.IsValid)
             {
-                // Randevu süresi 30 dakika
-                var appointmentEnd = appointment.AppointmentDate.AddMinutes(30);
+                // Mesai Saati Kontrolü (Örn: 09:00 - 17:00)
+                if (appointment.AppointmentDate.Hour < 9 || appointment.AppointmentDate.Hour >= 17)
+                {
+                    ModelState.AddModelError("", "Randevular sadece 09:00 - 17:00 saatleri arasında alınabilir.");
+                    ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Name", appointment.PatientId);
+                    ViewData["DoctorId"] = new SelectList(_context.Doctors, "Id", "Name", appointment.DoctorId);
+                    return View(appointment);
+                }
+
+                // Randevu süresi 30 dakika olarak ayarlanır ve EndDate hesaplanır
+                appointment.EndDate = appointment.AppointmentDate.AddMinutes(30);
 
                 // Çakışma kontrolü
                 var conflictingAppointment = await _context.Appointments
                     .Where(a => a.DoctorId == appointment.DoctorId &&
-                                a.AppointmentDate < appointmentEnd &&
-                                a.AppointmentDate.AddMinutes(30) > appointment.AppointmentDate)
+                                a.AppointmentDate < appointment.EndDate &&
+                                a.EndDate > appointment.AppointmentDate)
                     .FirstOrDefaultAsync();
 
                 if (conflictingAppointment != null)
@@ -125,15 +132,24 @@ namespace AppointmentSchedulingSystem.Controllers
 
             if (ModelState.IsValid)
             {
-                // Randevu süresi 30 dakika
-                var appointmentEnd = appointment.AppointmentDate.AddMinutes(30);
+                // Mesai Saati Kontrolü (Örn: 09:00 - 17:00)
+                if (appointment.AppointmentDate.Hour < 9 || appointment.AppointmentDate.Hour >= 17)
+                {
+                    ModelState.AddModelError("", "Randevular sadece 09:00 - 17:00 saatleri arasında alınabilir.");
+                    ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Name", appointment.PatientId);
+                    ViewData["DoctorId"] = new SelectList(_context.Doctors, "Id", "Name", appointment.DoctorId);
+                    return View(appointment);
+                }
 
-                // Çakışma kontrolü
+                // Randevu süresi 30 dakika olarak ayarlanır ve EndDate hesaplanır
+                appointment.EndDate = appointment.AppointmentDate.AddMinutes(30);
+
+                // Çakışma kontrolü (Artık veritabanındaki EndDate kullanılıyor)
                 var conflictingAppointment = await _context.Appointments
                     .Where(a => a.Id != appointment.Id && // Kendi kendisiyle çakışmasını önle
                                 a.DoctorId == appointment.DoctorId &&
-                                a.AppointmentDate < appointmentEnd &&
-                                a.AppointmentDate.AddMinutes(30) > appointment.AppointmentDate)
+                                a.AppointmentDate < appointment.EndDate &&
+                                a.EndDate > appointment.AppointmentDate)
                     .FirstOrDefaultAsync();
 
                 if (conflictingAppointment != null)
@@ -143,9 +159,6 @@ namespace AppointmentSchedulingSystem.Controllers
                     ViewData["DoctorId"] = new SelectList(_context.Doctors, "Id", "Name", appointment.DoctorId);
                     return View(appointment);
                 }
-
-
-
 
                 try
                 {

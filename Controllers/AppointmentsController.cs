@@ -125,11 +125,15 @@ namespace AppointmentSchedulingSystem.Controllers
 
             if (ModelState.IsValid)
             {
+                // Randevu süresi 30 dakika
+                var appointmentEnd = appointment.AppointmentDate.AddMinutes(30);
 
                 // Çakışma kontrolü
                 var conflictingAppointment = await _context.Appointments
-                    .Where(a => a.DoctorId == appointment.DoctorId &&
-                                a.AppointmentDate == appointment.AppointmentDate)
+                    .Where(a => a.Id != appointment.Id && // Kendi kendisiyle çakışmasını önle
+                                a.DoctorId == appointment.DoctorId &&
+                                a.AppointmentDate < appointmentEnd &&
+                                a.AppointmentDate.AddMinutes(30) > appointment.AppointmentDate)
                     .FirstOrDefaultAsync();
 
                 if (conflictingAppointment != null)

@@ -22,7 +22,7 @@ namespace AppointmentSchedulingSystem.Controllers
         // GET: Doctors
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Doctors.ToListAsync());
+            return View(await _context.Doctors.Include(d => d.Clinical).ToListAsync());
         }
 
         // GET: Doctors/Details/5
@@ -34,6 +34,7 @@ namespace AppointmentSchedulingSystem.Controllers
             }
 
             var doctor = await _context.Doctors
+                .Include(d => d.Clinical)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (doctor == null)
             {
@@ -46,6 +47,7 @@ namespace AppointmentSchedulingSystem.Controllers
         // GET: Doctors/Create
         public IActionResult Create()
         {
+            ViewData["ClinicalId"] = new SelectList(_context.Clinicals, "Id", "Name");
             return View();
         }
 
@@ -54,7 +56,7 @@ namespace AppointmentSchedulingSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Surname,Specialization")] Doctor doctor)
+        public async Task<IActionResult> Create([Bind("Id,Name,Surname,Specialization,ClinicalId")] Doctor doctor)
         {
             if (ModelState.IsValid)
             {
@@ -62,6 +64,7 @@ namespace AppointmentSchedulingSystem.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["ClinicalId"] = new SelectList(_context.Clinicals, "Id", "Name", doctor.ClinicalId);
             return View(doctor);
         }
 
@@ -78,6 +81,7 @@ namespace AppointmentSchedulingSystem.Controllers
             {
                 return NotFound();
             }
+            ViewData["ClinicalId"] = new SelectList(_context.Clinicals, "Id", "Name", doctor.ClinicalId);
             return View(doctor);
         }
 
@@ -86,7 +90,7 @@ namespace AppointmentSchedulingSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Surname,Specialization")] Doctor doctor)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Surname,Specialization,ClinicalId")] Doctor doctor)
         {
             if (id != doctor.Id)
             {
@@ -113,6 +117,7 @@ namespace AppointmentSchedulingSystem.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["ClinicalId"] = new SelectList(_context.Clinicals, "Id", "Name", doctor.ClinicalId);
             return View(doctor);
         }
 

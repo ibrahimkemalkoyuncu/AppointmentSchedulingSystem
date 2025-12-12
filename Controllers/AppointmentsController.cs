@@ -297,5 +297,64 @@ namespace AppointmentSchedulingSystem.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+        // GET: Appointments/Consultation/5
+        public async Task<IActionResult> Consultation(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var appointment = await _context.Appointments
+                .Include(a => a.Doctor)
+                .Include(a => a.Patient)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (appointment == null)
+            {
+                return NotFound();
+            }
+
+            return View(appointment);
+        }
+
+        // POST: Appointments/Consultation/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Consultation(int id, [Bind("Id,Complaint,Diagnosis,Treatment")] Appointment appointmentData)
+        {
+            var appointment = await _context.Appointments.FindAsync(id);
+            if (appointment == null)
+            {
+                return NotFound();
+            }
+
+            // Tıbbi bilgileri güncelle
+            appointment.Complaint = appointmentData.Complaint;
+            appointment.Diagnosis = appointmentData.Diagnosis;
+            appointment.Treatment = appointmentData.Treatment;
+
+            // Muayene tamamlandı olarak işaretle
+            appointment.Status = "Tamamlandı";
+
+            try
+            {
+                _context.Update(appointment);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                 if (!AppointmentExists(appointment.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index)); // veya Doktorun kendi paneline yönlendirilebilir
+        }
     }
 }

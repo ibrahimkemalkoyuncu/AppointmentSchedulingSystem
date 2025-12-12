@@ -70,7 +70,10 @@ namespace AppointmentSchedulingSystem.Controllers
 
                 // Mesai Saati Kontrolü (Örn: 09:00 - 17:00)
                 // Randevu 09:00'dan önce başlayamaz ve 17:00'dan sonra bitemez.
-                if (appointment.AppointmentDate.Hour < 9 || appointment.EndDate.Hour >= 17 || (appointment.EndDate.Hour == 17 && appointment.EndDate.Minute > 0))
+                var workStart = new TimeSpan(9, 0, 0);
+                var workEnd = new TimeSpan(17, 0, 0);
+
+                if (appointment.AppointmentDate.TimeOfDay < workStart || appointment.EndDate.TimeOfDay > workEnd)
                 {
                     ModelState.AddModelError("", "Randevular 09:00 - 17:00 saatleri arasında olmalıdır.");
                     ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Name", appointment.PatientId);
@@ -157,7 +160,10 @@ namespace AppointmentSchedulingSystem.Controllers
 
                 // Mesai Saati Kontrolü (Örn: 09:00 - 17:00)
                 // Randevu 09:00'dan önce başlayamaz ve 17:00'dan sonra bitemez.
-                if (appointment.AppointmentDate.Hour < 9 || appointment.EndDate.Hour >= 17 || (appointment.EndDate.Hour == 17 && appointment.EndDate.Minute > 0))
+                var workStart = new TimeSpan(9, 0, 0);
+                var workEnd = new TimeSpan(17, 0, 0);
+
+                if (appointment.AppointmentDate.TimeOfDay < workStart || appointment.EndDate.TimeOfDay > workEnd)
                 {
                     ModelState.AddModelError("", "Randevular 09:00 - 17:00 saatleri arasında olmalıdır.");
                     ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Name", appointment.PatientId);
@@ -258,6 +264,38 @@ namespace AppointmentSchedulingSystem.Controllers
         private bool AppointmentExists(int id)
         {
             return _context.Appointments.Any(e => e.Id == id);
+        }
+
+        // POST: Appointments/Complete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Complete(int id)
+        {
+            var appointment = await _context.Appointments.FindAsync(id);
+            if (appointment == null)
+            {
+                return NotFound();
+            }
+
+            appointment.Status = "Tamamlandı";
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        // POST: Appointments/Cancel/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Cancel(int id)
+        {
+            var appointment = await _context.Appointments.FindAsync(id);
+            if (appointment == null)
+            {
+                return NotFound();
+            }
+
+            appointment.Status = "İptal Edildi";
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
     }
 }

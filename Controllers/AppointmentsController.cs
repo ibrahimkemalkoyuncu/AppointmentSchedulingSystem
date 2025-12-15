@@ -43,6 +43,17 @@ namespace AppointmentSchedulingSystem.Controllers
                 return NotFound();
             }
 
+            // Hastanın geçmiş tıbbi kayıtlarını getir (Tamamlanmış randevular)
+            var history = await _context.Appointments
+                .Include(a => a.Doctor)
+                .Where(a => a.PatientId == appointment.PatientId &&
+                            a.Status == "Tamamlandı" &&
+                            a.Id != appointment.Id) // Şu anki randevu hariç
+                .OrderByDescending(a => a.AppointmentDate)
+                .ToListAsync();
+
+            ViewBag.PatientHistory = history;
+
             return View(appointment);
         }
 
@@ -355,6 +366,27 @@ namespace AppointmentSchedulingSystem.Controllers
                 }
             }
             return RedirectToAction(nameof(Index)); // veya Doktorun kendi paneline yönlendirilebilir
+        }
+
+        // GET: Appointments/PrintPrescription/5
+        public async Task<IActionResult> PrintPrescription(int? id)
+        {
+             if (id == null)
+            {
+                return NotFound();
+            }
+
+            var appointment = await _context.Appointments
+                .Include(a => a.Doctor)
+                .Include(a => a.Patient)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (appointment == null)
+            {
+                return NotFound();
+            }
+
+            return View(appointment);
         }
     }
 }

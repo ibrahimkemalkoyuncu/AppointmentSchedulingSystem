@@ -63,7 +63,11 @@ namespace AppointmentSchedulingSystem.Controllers
         // GET: Appointments/Create
         public IActionResult Create()
         {
-            ViewData["DoctorId"] = new SelectList(_context.Doctors, "Id", "Name");
+            // Başlangıçta doktor listesi boş veya tümü olabilir.
+            // UX açısından önce Klinik seçtirmek daha doğru, bu yüzden Doktor listesini boş gönderiyoruz (veya seçiniz uyarısı ile).
+            // Ancak Edit durumunda veya Validasyon hatasında doluluk gerekebilir.
+            ViewData["ClinicalId"] = new SelectList(_context.Clinicals, "Id", "Name");
+            ViewData["DoctorId"] = new SelectList(new List<Doctor>(), "Id", "Name"); // Başlangıçta boş
             ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "IdentityNumber");
             return View();
         }

@@ -158,5 +158,16 @@ namespace AppointmentSchedulingSystem.Controllers
         {
             return _context.Doctors.Any(e => e.Id == id);
         }
+
+        // API: Get Doctors by Clinic ID
+        [HttpGet]
+        public async Task<JsonResult> GetDoctorsByClinic(int clinicalId)
+        {
+            var doctors = await _context.Doctors
+                .Where(d => d.ClinicalId == clinicalId)
+                .Select(d => new { id = d.Id, name = d.Name + " " + d.Surname + " (" + d.Specialization + ")" })
+                .ToListAsync();
+            return Json(doctors);
+        }
     }
 }

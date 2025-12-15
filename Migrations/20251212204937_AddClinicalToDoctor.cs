@@ -15,12 +15,18 @@ namespace AppointmentSchedulingSystem.Migrations
                 name: "FK_Doctors_Clinicals_ClinicalId",
                 table: "Doctors");
 
+            // Güvenli Migration Adımı 1: Varsayılan bir Klinik oluştur (Eğer yoksa)
+            migrationBuilder.Sql("IF NOT EXISTS (SELECT 1 FROM Clinicals WHERE Id = 1) INSERT INTO Clinicals (Name, Address, PhoneNumber) VALUES ('Genel Klinik', 'Merkez', '0000000000')");
+
+            // Güvenli Migration Adımı 2: Mevcut "sahipsiz" doktorları bu kliniğe ata
+            migrationBuilder.Sql("UPDATE Doctors SET ClinicalId = 1 WHERE ClinicalId IS NULL");
+
             migrationBuilder.AlterColumn<int>(
                 name: "ClinicalId",
                 table: "Doctors",
                 type: "int",
                 nullable: false,
-                defaultValue: 0,
+                defaultValue: 1, // Yeni eklenecekler için de varsayılan 1
                 oldClrType: typeof(int),
                 oldType: "int",
                 oldNullable: true);

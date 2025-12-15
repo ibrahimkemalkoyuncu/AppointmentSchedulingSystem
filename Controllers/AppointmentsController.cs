@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AppointmentSchedulingSystem.Data;
 using AppointmentSchedulingSystem.Models;
+using AppointmentSchedulingSystem.Services;
 
 namespace AppointmentSchedulingSystem.Controllers
 {
     public class AppointmentsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IAppointmentService _appointmentService;
 
-        public AppointmentsController(ApplicationDbContext context)
+        public AppointmentsController(ApplicationDbContext context, IAppointmentService appointmentService)
         {
             _context = context;
+            _appointmentService = appointmentService;
         }
 
         // GET: Appointments
@@ -74,49 +77,14 @@ namespace AppointmentSchedulingSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Doktorun varsayılan randevu süresini getir
-                var doctor = await _context.Doctors.FindAsync(appointment.DoctorId);
-                var duration = doctor?.AppointmentDuration ?? 30; // Varsayılan 30 dk
-                appointment.EndDate = appointment.AppointmentDate.AddMinutes(duration);
+                // Bitiş tarihini hesapla
+                appointment.EndDate = await _appointmentService.CalculateEndDateAsync(appointment.DoctorId, appointment.AppointmentDate);
 
-                // Mesai Saati Kontrolü (Örn: 09:00 - 17:00)
-                // Randevu 09:00'dan önce başlayamaz ve 17:00'dan sonra bitemez.
-                var workStart = new TimeSpan(9, 0, 0);
-                var workEnd = new TimeSpan(17, 0, 0);
-
-                if (appointment.AppointmentDate.TimeOfDay < workStart || appointment.EndDate.TimeOfDay > workEnd)
+                // Service Layer Validasyonu
+                var validationResult = await _appointmentService.ValidateAppointmentAsync(appointment);
+                if (!validationResult.IsValid)
                 {
-                    ModelState.AddModelError("", "Randevular 09:00 - 17:00 saatleri arasında olmalıdır.");
-                    ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Name", appointment.PatientId);
-                    ViewData["DoctorId"] = new SelectList(_context.Doctors, "Id", "Name", appointment.DoctorId);
-                    return View(appointment);
-                }
-
-                // 1. Doktor Çakışma Kontrolü
-                var conflictingAppointment = await _context.Appointments
-                    .Where(a => a.DoctorId == appointment.DoctorId &&
-                                a.AppointmentDate < appointment.EndDate &&
-                                a.EndDate > appointment.AppointmentDate)
-                    .FirstOrDefaultAsync();
-
-                if (conflictingAppointment != null)
-                {
-                    ModelState.AddModelError("", "Bu tarih ve saatte doktorun başka bir randevusu bulunmaktadır.");
-                    ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Name", appointment.PatientId);
-                    ViewData["DoctorId"] = new SelectList(_context.Doctors, "Id", "Name", appointment.DoctorId);
-                    return View(appointment);
-                }
-
-                // 2. Hasta Çakışma Kontrolü (Hasta aynı anda iki yerde olamaz)
-                var patientConflict = await _context.Appointments
-                    .Where(a => a.PatientId == appointment.PatientId &&
-                                a.AppointmentDate < appointment.EndDate &&
-                                a.EndDate > appointment.AppointmentDate)
-                    .FirstOrDefaultAsync();
-
-                if (patientConflict != null)
-                {
-                    ModelState.AddModelError("", "Hastanın bu saatte başka bir doktorla randevusu bulunmaktadır.");
+                    ModelState.AddModelError("", validationResult.ErrorMessage);
                     ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Name", appointment.PatientId);
                     ViewData["DoctorId"] = new SelectList(_context.Doctors, "Id", "Name", appointment.DoctorId);
                     return View(appointment);
@@ -164,51 +132,27 @@ namespace AppointmentSchedulingSystem.Controllers
 
             if (ModelState.IsValid)
             {
-                // Doktorun varsayılan randevu süresini getir
-                var doctor = await _context.Doctors.FindAsync(appointment.DoctorId);
-                var duration = doctor?.AppointmentDuration ?? 30; // Varsayılan 30 dk
-                appointment.EndDate = appointment.AppointmentDate.AddMinutes(duration);
-
-                // Mesai Saati Kontrolü (Örn: 09:00 - 17:00)
-                // Randevu 09:00'dan önce başlayamaz ve 17:00'dan sonra bitemez.
-                var workStart = new TimeSpan(9, 0, 0);
-                var workEnd = new TimeSpan(17, 0, 0);
-
-                if (appointment.AppointmentDate.TimeOfDay < workStart || appointment.EndDate.TimeOfDay > workEnd)
+                // Mevcut randevuyu veritabanından çek (Tıbbi verileri korumak için)
+                var existingAppointment = await _context.Appointments.FindAsync(id);
+                if (existingAppointment == null)
                 {
-                    ModelState.AddModelError("", "Randevular 09:00 - 17:00 saatleri arasında olmalıdır.");
-                    ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Name", appointment.PatientId);
-                    ViewData["DoctorId"] = new SelectList(_context.Doctors, "Id", "Name", appointment.DoctorId);
-                    return View(appointment);
+                    return NotFound();
                 }
 
-                // 1. Doktor Çakışma Kontrolü
-                var conflictingAppointment = await _context.Appointments
-                    .Where(a => a.Id != appointment.Id && // Kendi kendisiyle çakışmasını önle
-                                a.DoctorId == appointment.DoctorId &&
-                                a.AppointmentDate < appointment.EndDate &&
-                                a.EndDate > appointment.AppointmentDate)
-                    .FirstOrDefaultAsync();
+                // Sadece izin verilen alanları güncelle
+                existingAppointment.PatientId = appointment.PatientId;
+                existingAppointment.DoctorId = appointment.DoctorId;
+                existingAppointment.AppointmentDate = appointment.AppointmentDate;
+                existingAppointment.Status = appointment.Status;
 
-                if (conflictingAppointment != null)
+                // Bitiş tarihini hesapla
+                existingAppointment.EndDate = await _appointmentService.CalculateEndDateAsync(existingAppointment.DoctorId, existingAppointment.AppointmentDate);
+
+                // Service Layer Validasyonu
+                var validationResult = await _appointmentService.ValidateAppointmentAsync(existingAppointment);
+                if (!validationResult.IsValid)
                 {
-                    ModelState.AddModelError("", "Bu tarih ve saatte doktorun başka bir randevusu bulunmaktadır.");
-                    ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Name", appointment.PatientId);
-                    ViewData["DoctorId"] = new SelectList(_context.Doctors, "Id", "Name", appointment.DoctorId);
-                    return View(appointment);
-                }
-
-                // 2. Hasta Çakışma Kontrolü
-                var patientConflict = await _context.Appointments
-                    .Where(a => a.Id != appointment.Id && // Kendi kendisini hariç tut
-                                a.PatientId == appointment.PatientId &&
-                                a.AppointmentDate < appointment.EndDate &&
-                                a.EndDate > appointment.AppointmentDate)
-                    .FirstOrDefaultAsync();
-
-                if (patientConflict != null)
-                {
-                    ModelState.AddModelError("", "Hastanın bu saatte başka bir doktorla randevusu bulunmaktadır.");
+                    ModelState.AddModelError("", validationResult.ErrorMessage);
                     ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Name", appointment.PatientId);
                     ViewData["DoctorId"] = new SelectList(_context.Doctors, "Id", "Name", appointment.DoctorId);
                     return View(appointment);
@@ -216,7 +160,7 @@ namespace AppointmentSchedulingSystem.Controllers
 
                 try
                 {
-                    _context.Update(appointment);
+                    _context.Update(existingAppointment);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

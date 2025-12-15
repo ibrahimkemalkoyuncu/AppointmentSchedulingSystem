@@ -1,5 +1,6 @@
 using System.Configuration;
 using AppointmentSchedulingSystem.Data;
+using AppointmentSchedulingSystem.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add services to the container.
+builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();

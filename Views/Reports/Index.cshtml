@@ -1,0 +1,90 @@
+@{
+    ViewData["Title"] = "Yönetici Raporları";
+}
+
+<div class="container">
+    <h1 class="mb-4">Klinik Performans Raporları</h1>
+
+    <div class="row">
+        <!-- Doktor Performansı -->
+        <div class="col-md-6 mb-4">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Doktor Randevu Dağılımı</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="doctorChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Klinik Dağılımı -->
+        <div class="col-md-6 mb-4">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Klinik Doluluk Oranları</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="clinicChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Doktor Performans Grafiği
+            $.ajax({
+                url: '/Reports/GetDoctorPerformance',
+                success: function (data) {
+                    var labels = data.map(x => x.doctorName);
+                    var counts = data.map(x => x.count);
+
+                    new Chart(document.getElementById('doctorChart'), {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Randevu Sayısı',
+                                data: counts,
+                                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: { beginAtZero: true }
+                            }
+                        }
+                    });
+                }
+            });
+
+            // Klinik Dağılım Grafiği
+            $.ajax({
+                url: '/Reports/GetClinicDistribution',
+                success: function (data) {
+                    var labels = data.map(x => x.clinicName);
+                    var counts = data.map(x => x.count);
+
+                    new Chart(document.getElementById('clinicChart'), {
+                        type: 'pie',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                data: counts,
+                                backgroundColor: [
+                                    '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'
+                                ]
+                            }]
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}

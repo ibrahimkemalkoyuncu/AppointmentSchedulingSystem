@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AppointmentSchedulingSystem.Data;
 using AppointmentSchedulingSystem.Models;
+using AppointmentSchedulingSystem.Helpers;
 
 namespace AppointmentSchedulingSystem.Controllers
 {
@@ -20,9 +21,31 @@ namespace AppointmentSchedulingSystem.Controllers
         }
 
         // GET: Patients
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string currentFilter, string searchString, int? pageNumber)
         {
-            return View(await _context.Patients.ToListAsync());
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewData["CurrentFilter"] = searchString;
+
+            var patients = from p in _context.Patients
+                           select p;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                patients = patients.Where(s => s.Surname.Contains(searchString)
+                                       || s.Name.Contains(searchString)
+                                       || s.IdentityNumber.Contains(searchString));
+            }
+
+            int pageSize = 10;
+            return View(await PaginatedList<Patient>.CreateAsync(patients.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Patients/Details/5

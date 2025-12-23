@@ -1,32 +1,113 @@
-﻿@{
-    ViewData["Title"] = "Ana Sayfa";
+@model IEnumerable<AppointmentSchedulingSystem.Models.Appointment>
+
+@{
+    ViewData["Title"] = "Klinik Yönetim Paneli";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Hastane Randevu Sistemi</h1>
-    <p>Hoş geldiniz! Randevu işlemleriniz için aşağıdaki linkleri kullanabilirsiniz.</p>
+<div class="text-center mb-5">
+    <h1 class="display-4">Klinik Yönetim Paneli</h1>
+    <p class="lead">Günlük operasyonlarınızı tek bir yerden yönetin.</p>
 </div>
 
-<div class="row">
+<!-- Key Metrics Cards -->
+<div class="row mb-4">
     <div class="col-md-4">
-        <h2>Randevular</h2>
-        <ul>
-            <li><a asp-controller="Appointments" asp-action="Index">Randevu Listesi</a></li>
-            <li><a asp-controller="Appointments" asp-action="Create">Yeni Randevu</a></li>
-        </ul>
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-header">Bugünkü Randevular</div>
+            <div class="card-body">
+                <h2 class="card-title display-4">@ViewBag.TodaysAppointments</h2>
+                <p class="card-text">Bugün için planlanan randevu sayısı.</p>
+            </div>
+        </div>
     </div>
     <div class="col-md-4">
-        <h2>Hastalar</h2>
-        <ul>
-            <li><a asp-controller="Patients" asp-action="Index">Hasta Listesi</a></li>
-            <li><a asp-controller="Patients" asp-action="Create">Yeni Hasta Kaydı</a></li>
-        </ul>
+        <div class="card text-white bg-success mb-3">
+            <div class="card-header">Toplam Hasta</div>
+            <div class="card-body">
+                <h2 class="card-title display-4">@ViewBag.TotalPatients</h2>
+                <p class="card-text">Sistemde kayıtlı toplam hasta sayısı.</p>
+            </div>
+        </div>
     </div>
     <div class="col-md-4">
-        <h2>Doktorlar</h2>
-        <ul>
-            <li><a asp-controller="Doctors" asp-action="Index">Doktor Listesi</a></li>
-            <li><a asp-controller="Doctors" asp-action="Create">Yeni Doktor Kaydı</a></li>
-        </ul>
+        <div class="card text-white bg-info mb-3">
+            <div class="card-header">Toplam Doktor</div>
+            <div class="card-body">
+                <h2 class="card-title display-4">@ViewBag.TotalDoctors</h2>
+                <p class="card-text">Klinikte hizmet veren doktor sayısı.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Upcoming Appointments Table -->
+<div class="card">
+    <div class="card-header bg-light">
+        <h4>Sıradaki Randevular</h4>
+    </div>
+    <div class="card-body">
+        @if (Model != null && Model.Any())
+        {
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Tarih</th>
+                        <th>Saat</th>
+                        <th>Hasta</th>
+                        <th>Doktor</th>
+                        <th>Durum</th>
+                        <th>İşlem</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.AppointmentDate.ToString("dd.MM.yyyy")</td>
+                            <td>@item.AppointmentDate.ToString("HH:mm") - @item.EndDate.ToString("HH:mm")</td>
+                            <td>@item.Patient?.Name @item.Patient?.Surname</td>
+                            <td>@item.Doctor?.Name @item.Doctor?.Surname</td>
+                            <td><span class="badge bg-warning text-dark">@item.Status</span></td>
+                            <td>
+                                <a asp-controller="Appointments" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Düzenle</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="alert alert-info">Bekleyen randevu bulunmamaktadır.</div>
+        }
+        <div class="text-end">
+            <a asp-controller="Appointments" asp-action="Index" class="btn btn-primary">Tüm Randevuları Gör</a>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Hızlı İşlemler</h5>
+                <div class="d-grid gap-2">
+                    <a asp-controller="Appointments" asp-action="Create" class="btn btn-outline-primary">Yeni Randevu Oluştur</a>
+                    <a asp-controller="Patients" asp-action="Create" class="btn btn-outline-success">Yeni Hasta Kaydı</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Yönetim</h5>
+                 <div class="d-grid gap-2">
+                    <a asp-controller="Reports" asp-action="Index" class="btn btn-outline-dark">📊 Raporlar ve İstatistikler</a>
+                    <a asp-controller="Doctors" asp-action="Index" class="btn btn-outline-info">Doktor Yönetimi</a>
+                    <a asp-controller="Clinicals" asp-action="Index" class="btn btn-outline-secondary">Klinik Yönetimi (Geliştirme Aşamasında)</a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
